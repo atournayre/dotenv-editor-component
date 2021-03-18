@@ -1,0 +1,25 @@
+{
+  "name": "atournayre/dotenv-editor",
+  "type": "library",
+  "description": ".env editor Component",
+  "keywords": [],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Aurélien Tournayre",
+      "email": "aurelien.tournayre@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^7.2.9"
+  },
+  "autoload": {
+    "psr-4": {
+      "Atournayre\\Component\\DotEnvEditor\\": ""
+    },
+    "exclude-from-classmap": [
+      "/Tests/"
+    ]
+  },
+  "minimum-stability": "dev"
+}
