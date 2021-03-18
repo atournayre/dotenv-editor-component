@@ -66,18 +66,18 @@ class DotEnvEditor
         return $this->dotEnvVariables[$variableKey];
     }
 
+    public function toArray(): array
+    {
+        return $this->dotEnvVariables;
+    }
+
     private function arrayToContent(array $array): string
     {
         $contentParts = ['<?php', 'return array('];
-        $content = '<?php' . PHP_EOL;
-        $content .= 'return array(' . PHP_EOL;
         foreach ($array as $key => $value) {
-            $content .= sprintf($this->getOutputPatternForValue($value), $key, $value);
             array_push($contentParts, sprintf($this->getOutputPatternForValue($value), $key, $value));
         }
-        $content .= ');' . PHP_EOL;
         array_push($contentParts, ');');
-        return $content;
         return implode(PHP_EOL, $contentParts);
     }
 
