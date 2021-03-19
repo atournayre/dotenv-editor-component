@@ -81,18 +81,18 @@ class DotEnvEditor
         return implode(PHP_EOL, $contentParts);
     }
 
-    private function getOutputPatternForValue($value)
+    private function getOutputPatternForValue($value): string
     {
-        $outputPattern = '\'%s\' => \'%s\',';
+        $outputPattern = '\'%s\'';
         if ($value === 'true' || $value === true) {
-            $outputPattern = '\'%s\' => true,';
+            $outputPattern = 'true';
         } elseif ($value === 'false' || $value === false) {
-            $outputPattern = '\'%s\' => false,';
+            $outputPattern = 'false';
         } elseif (is_null($value)) {
-            $outputPattern = '\'%s\' => null,';
+            $outputPattern = 'null';
         }
 
-        return '    ' . $outputPattern . PHP_EOL;
+        return '\'%s\' => '.$outputPattern.',';
     }
 }
 
