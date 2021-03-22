@@ -34,7 +34,11 @@ class DotEnvEditor
         $this->file = new \SplFileObject($filePath, 'r+');
     }
 
-    public function add(string $key, ?string $value)
+    /**
+     * @param string $key
+     * @param string|bool|null $value
+     */
+    public function add(string $key, $value = null)
     {
         $this->dotEnvVariables[$key] = $value;
     }
@@ -55,10 +59,10 @@ class DotEnvEditor
 
     /**
      * @param string $variableKey
-     * @return string
+     * @return string|bool
      * @throws DotEnvEditorMissingVariableException
      */
-    public function get(string $variableKey): string
+    public function get(string $variableKey)
     {
         if (!array_key_exists($variableKey, $this->dotEnvVariables)) {
             throw new DotEnvEditorMissingVariableException($variableKey);

@@ -81,4 +81,43 @@ class DotEnvEditorTest extends TestCase
         ];
         $this->assertEquals($expectedArray, $dotEnvEditor->toArray());
     }
+
+    public function testGetVariablesAsArrayWithTrueValue()
+    {
+        $dotEnvEditor = new DotEnvEditor();
+        $dotEnvEditor->load(__DIR__.'/datas/.env.test.php');
+        $dotEnvEditor->add('VAR2', true);
+        $dotEnvEditor->save();
+
+        $dotEnvEditor2 = new DotEnvEditor();
+        $dotEnvEditor2->load(__DIR__.'/datas/.env.test.php');
+
+        $this->assertIsBool($dotEnvEditor2->get('VAR2'));
+    }
+
+    public function testGetVariablesAsArrayWithFalseValue()
+    {
+        $dotEnvEditor = new DotEnvEditor();
+        $dotEnvEditor->load(__DIR__.'/datas/.env.test.php');
+        $dotEnvEditor->add('VAR2', false);
+        $dotEnvEditor->save();
+
+        $dotEnvEditor2 = new DotEnvEditor();
+        $dotEnvEditor2->load(__DIR__.'/datas/.env.test.php');
+
+        $this->assertIsBool($dotEnvEditor2->get('VAR2'));
+    }
+
+    public function testGetVariablesAsArrayWithNullValue()
+    {
+        $dotEnvEditor = new DotEnvEditor();
+        $dotEnvEditor->load(__DIR__.'/datas/.env.test.php');
+        $dotEnvEditor->add('VAR2');
+        $dotEnvEditor->save();
+
+        $dotEnvEditor2 = new DotEnvEditor();
+        $dotEnvEditor2->load(__DIR__.'/datas/.env.test.php');
+
+        $this->assertNull($dotEnvEditor2->get('VAR2'));
+    }
 }
