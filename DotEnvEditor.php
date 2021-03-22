@@ -54,11 +54,11 @@ class DotEnvEditor
     }
 
     /**
-     * @param $variableKey
+     * @param string $variableKey
      * @return string
      * @throws DotEnvEditorMissingVariableException
      */
-    public function get($variableKey): string
+    public function get(string $variableKey): string
     {
         if (!array_key_exists($variableKey, $this->dotEnvVariables)) {
             throw new DotEnvEditorMissingVariableException($variableKey);
