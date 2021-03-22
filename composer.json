@@ -21,5 +21,13 @@
       "/Tests/"
     ]
   },
-  "minimum-stability": "dev"
+  "autoload-dev": {
+    "psr-4": {
+      "Atournayre\\Component\\DotEnvEditor\\Tests\\": "Tests/"
+    }
+  },
+  "minimum-stability": "dev",
+  "require-dev": {
+    "symfony/phpunit-bridge": "^4"
+  }
 }
