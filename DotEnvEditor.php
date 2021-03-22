@@ -11,7 +11,7 @@
 
 namespace Atournayre\Component\DotEnvEditor;
 
-use Atournayre\Component\Exception\DotEnvEditorMissingVariableException;
+use Atournayre\Component\DotEnvEditor\Exception\DotEnvEditorMissingVariableException;
 
 /**
  * @author Aurélien Tournayre <aurelien.tournayre@gmail.com>
