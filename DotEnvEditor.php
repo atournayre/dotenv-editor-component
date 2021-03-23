@@ -11,6 +11,7 @@
 
 namespace Atournayre\Component\DotEnvEditor;
 
+use Atournayre\Component\DotEnvEditor\Exception\DotEnvEditorAddVariableTypeException;
 use Atournayre\Component\DotEnvEditor\Exception\DotEnvEditorMissingVariableException;
 
 /**
@@ -36,10 +37,14 @@ class DotEnvEditor
 
     /**
      * @param string $key
-     * @param string|bool|null $value
+     * @param string|bool|integer|null $value
+     * @throws DotEnvEditorAddVariableTypeException
      */
     public function add(string $key, $value = null)
     {
+        if (!is_bool($value) && !is_string($value) && !is_null($value) && !is_int($value)) {
+            throw new DotEnvEditorAddVariableTypeException($key, $value);
+        }
         $this->dotEnvVariables[$key] = $value;
     }
 

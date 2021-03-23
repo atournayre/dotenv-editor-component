@@ -3,121 +3,123 @@
 namespace Atournayre\Component\DotEnvEditor\Tests;
 
 use Atournayre\Component\DotEnvEditor\DotEnvEditor;
+use Atournayre\Component\DotEnvEditor\Exception\DotEnvEditorAddVariableTypeException;
 use Atournayre\Component\DotEnvEditor\Exception\DotEnvEditorMissingVariableException;
 use PHPUnit\Framework\TestCase;
 
 class DotEnvEditorTest extends TestCase
 {
+    /**
+     * @var DotEnvEditor
+     */
+    private $dotEnvEditor;
+
+    const PATH_TO_DOTENV_DOTETEST_DOTPHP = __DIR__.'/datas/.env.test.php';
+
     protected function setUp(): void
     {
-        copy(__DIR__.'/datas/.env.php', __DIR__.'/datas/.env.test.php');
+        copy(__DIR__.'/datas/.env.php', self::PATH_TO_DOTENV_DOTETEST_DOTPHP);
+        $this->dotEnvEditor = new DotEnvEditor();
     }
 
     protected function tearDown(): void
     {
-        unlink(__DIR__.'/datas/.env.test.php');
+        unlink(self::PATH_TO_DOTENV_DOTETEST_DOTPHP);
     }
 
     public function testGetUnexistingVariable()
     {
         $this->expectException(DotEnvEditorMissingVariableException::class);
-        $dotEnvEditor = new DotEnvEditor();
-        $dotEnvEditor->load(__DIR__.'/datas/.env.test.php');
-        $dotEnvEditor->get('NonExisting');
+        $this->dotEnvEditor->load(self::PATH_TO_DOTENV_DOTETEST_DOTPHP);
+        $this->dotEnvEditor->get('NonExisting');
     }
 
     public function testGetVAR1Variable()
     {
-        $dotEnvEditor = new DotEnvEditor();
-        $dotEnvEditor->load(__DIR__.'/datas/.env.test.php');
-        $this->assertEquals('value1', $dotEnvEditor->get('VAR1'));
+        $this->dotEnvEditor->load(self::PATH_TO_DOTENV_DOTETEST_DOTPHP);
+        $this->assertEquals('value1', $this->dotEnvEditor->get('VAR1'));
     }
 
     public function testAddVAR2Variable()
     {
-        $dotEnvEditor = new DotEnvEditor();
-        $dotEnvEditor->load(__DIR__.'/datas/.env.test.php');
-        $dotEnvEditor->add('VAR2', 'value2');
-        $this->assertEquals('value2', $dotEnvEditor->get('VAR2'));
+        $this->dotEnvEditor->load(self::PATH_TO_DOTENV_DOTETEST_DOTPHP);
+        $this->dotEnvEditor->add('VAR2', 'value2');
+        $this->assertEquals('value2', $this->dotEnvEditor->get('VAR2'));
     }
 
     public function testResetVAR1Variable()
     {
-        $dotEnvEditor = new DotEnvEditor();
-        $dotEnvEditor->load(__DIR__.'/datas/.env.test.php');
-        $dotEnvEditor->reset('VAR1');
-        $this->assertEquals('', $dotEnvEditor->get('VAR1'));
+        $this->dotEnvEditor->load(self::PATH_TO_DOTENV_DOTETEST_DOTPHP);
+        $this->dotEnvEditor->reset('VAR1');
+        $this->assertEquals('', $this->dotEnvEditor->get('VAR1'));
     }
 
     public function testResetUnexistingVariable()
     {
-        $dotEnvEditor = new DotEnvEditor();
-        $dotEnvEditor->load(__DIR__.'/datas/.env.test.php');
-        $dotEnvEditor->reset('VAR2');
-        $this->assertEquals('', $dotEnvEditor->get('VAR2'));
+        $this->dotEnvEditor->load(self::PATH_TO_DOTENV_DOTETEST_DOTPHP);
+        $this->dotEnvEditor->reset('VAR2');
+        $this->assertEquals('', $this->dotEnvEditor->get('VAR2'));
     }
 
     public function testSaveFile()
     {
-        $dotEnvEditor = new DotEnvEditor();
-        $dotEnvEditor->load(__DIR__.'/datas/.env.test.php');
-        $dotEnvEditor->add('VAR2', 'value2');
-        $dotEnvEditor->save();
+        $this->dotEnvEditor->load(self::PATH_TO_DOTENV_DOTETEST_DOTPHP);
+        $this->dotEnvEditor->add('VAR2', 'value2');
+        $this->dotEnvEditor->save();
 
         $dotEnvEditor2 = new DotEnvEditor();
-        $dotEnvEditor2->load(__DIR__.'/datas/.env.test.php');
-        $this->assertEquals('value2', $dotEnvEditor->get('VAR2'));
+        $dotEnvEditor2->load(self::PATH_TO_DOTENV_DOTETEST_DOTPHP);
+        $this->assertEquals('value2', $this->dotEnvEditor->get('VAR2'));
     }
 
     public function testGetVariablesAsArray()
     {
-        $dotEnvEditor = new DotEnvEditor();
-        $dotEnvEditor->load(__DIR__.'/datas/.env.test.php');
-        $dotEnvEditor->add('VAR2', 'value2');
+        $this->dotEnvEditor->load(self::PATH_TO_DOTENV_DOTETEST_DOTPHP);
+        $this->dotEnvEditor->add('VAR2', 'value2');
 
         $expectedArray = [
             'VAR1' => 'value1',
             'VAR2' => 'value2',
         ];
-        $this->assertEquals($expectedArray, $dotEnvEditor->toArray());
+        $this->assertEquals($expectedArray, $this->dotEnvEditor->toArray());
     }
 
     public function testGetVariablesAsArrayWithTrueValue()
     {
-        $dotEnvEditor = new DotEnvEditor();
-        $dotEnvEditor->load(__DIR__.'/datas/.env.test.php');
-        $dotEnvEditor->add('VAR2', true);
-        $dotEnvEditor->save();
+        $this->dotEnvEditor->load(self::PATH_TO_DOTENV_DOTETEST_DOTPHP);
+        $this->dotEnvEditor->add('VAR2', true);
 
-        $dotEnvEditor2 = new DotEnvEditor();
-        $dotEnvEditor2->load(__DIR__.'/datas/.env.test.php');
-
-        $this->assertIsBool($dotEnvEditor2->get('VAR2'));
+        $this->assertIsBool($this->dotEnvEditor->get('VAR2'));
     }
 
     public function testGetVariablesAsArrayWithFalseValue()
     {
-        $dotEnvEditor = new DotEnvEditor();
-        $dotEnvEditor->load(__DIR__.'/datas/.env.test.php');
-        $dotEnvEditor->add('VAR2', false);
-        $dotEnvEditor->save();
+        $this->dotEnvEditor->load(self::PATH_TO_DOTENV_DOTETEST_DOTPHP);
+        $this->dotEnvEditor->add('VAR2', false);
 
-        $dotEnvEditor2 = new DotEnvEditor();
-        $dotEnvEditor2->load(__DIR__.'/datas/.env.test.php');
-
-        $this->assertIsBool($dotEnvEditor2->get('VAR2'));
+        $this->assertIsBool($this->dotEnvEditor->get('VAR2'));
     }
 
     public function testGetVariablesAsArrayWithNullValue()
     {
-        $dotEnvEditor = new DotEnvEditor();
-        $dotEnvEditor->load(__DIR__.'/datas/.env.test.php');
-        $dotEnvEditor->add('VAR2');
-        $dotEnvEditor->save();
+        $this->dotEnvEditor->load(self::PATH_TO_DOTENV_DOTETEST_DOTPHP);
+        $this->dotEnvEditor->add('VAR2');
 
-        $dotEnvEditor2 = new DotEnvEditor();
-        $dotEnvEditor2->load(__DIR__.'/datas/.env.test.php');
+        $this->assertNull($this->dotEnvEditor->get('VAR2'));
+    }
 
-        $this->assertNull($dotEnvEditor2->get('VAR2'));
+    public function testAddVariableArrayIsInvalid()
+    {
+        $this->expectException(DotEnvEditorAddVariableTypeException::class);
+        $this->dotEnvEditor->load(self::PATH_TO_DOTENV_DOTETEST_DOTPHP);
+        $this->dotEnvEditor->add('VAR2', array());
+    }
+
+    public function testAddVariableIntIsValid()
+    {
+        $this->dotEnvEditor->load(self::PATH_TO_DOTENV_DOTETEST_DOTPHP);
+        $this->dotEnvEditor->add('VAR2', 1);
+
+        $this->assertEquals(1, $this->dotEnvEditor->get('VAR2'));
     }
 }
