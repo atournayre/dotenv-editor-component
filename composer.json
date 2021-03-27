@@ -11,7 +11,7 @@
     }
   ],
   "require": {
-    "php": "^7.2.9"
+    "php": ">=7.1.3"
   },
   "autoload": {
     "psr-4": {
@@ -21,5 +21,13 @@
       "/Tests/"
     ]
   },
-  "minimum-stability": "dev"
+  "autoload-dev": {
+    "psr-4": {
+      "Atournayre\\Component\\DotEnvEditor\\Tests\\": "Tests/"
+    }
+  },
+  "minimum-stability": "dev",
+  "require-dev": {
+    "symfony/phpunit-bridge": "^4"
+  }
 }

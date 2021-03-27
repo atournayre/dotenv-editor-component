@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Atournayre\Component\Exception;
+namespace Atournayre\Component\DotEnvEditor\Exception;
 
 /**
  * @author Aurélien Tournayre <aurelien.tournayre@gmail.com>
