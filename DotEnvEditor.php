@@ -30,15 +30,38 @@ class DotEnvEditor
     private $dotEnvVariables = [];
 
     /**
+     * @var string
+     */
+    private $filePath;
+
+    public function __construct(?string $filePath = null)
+    {
+        @trigger_error('$filePath is currently optional but will be mandatory as of 1.2.0. Please update your application.', \E_USER_DEPRECATED);
+        if (null !== $filePath) {
+            $this->filePath = $filePath;
+            $this->file = new \SplFileObject($filePath, 'r+');
+        }
+    }
+
+    /**
      * Load .env.*.php variable in $dotEnvVariables property.
      * Construct a new file object.
      *
-     * @param string $filePath The file path of the .env.*.php file
+     * @param string|null $filePath The file path of the .env.*.php file
      */
-    public function load(string $filePath): void
+    public function load(?string $filePath = null): void
     {
-        $this->dotEnvVariables = @include $filePath;
-        $this->file = new \SplFileObject($filePath, 'r+');
+        if (null !== $filePath) {
+            @trigger_error('Using the $filePath is deprecated since 1.1.0 and will be removed in 1.2.0. Use constructor instead.', \E_USER_DEPRECATED);
+        }
+
+        $this->dotEnvVariables = null === $filePath
+            ? @include $this->filePath
+            : @include $filePath;
+
+        if (null === $this->file) {
+            $this->file = new \SplFileObject($filePath, 'r+');
+        }
     }
 
     /**
